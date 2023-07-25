@@ -13,3 +13,6 @@ class NewsModel(models.Model):
     description = models.TextField()
     resources = models.TextField()
     tags = models.ManyToManyField(TagModel)
+
+    def __str__(self) -> str:
+        return f"{self.title}"

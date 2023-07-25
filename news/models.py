@@ -8,3 +8,8 @@ class TagModel(models.Model):
     def __str__(self) -> str:
         return f"{self.tag_name}"
 
+class NewsModel(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    resources = models.TextField()
+    tags = models.ManyToManyField(TagModel)

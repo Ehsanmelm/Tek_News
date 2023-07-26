@@ -1,0 +1,29 @@
+image: python:3.11
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DJANGO_SETTINGS_MODULE: "config.settings"
+  
+build:
+  stage : build
+  script :
+    - pip install -r requirements.txt
+    - py manage.py makemigrations
+    - py manage.py migrate
+
+test:
+  stage : test
+  script : 
+    - pip install -r requirements.txt
+    - pytest
+
+deploy:
+  stage : deploy
+  script : 
+    - py manage.py runserver
+  
+
+

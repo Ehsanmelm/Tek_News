@@ -3,9 +3,11 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from news.models import NewsModel
+# from django.conf import settings
 
+# settings.configure()
 
-@pytest.mark.django_db
+# @pytest.mark.django_db
 class TestNews(APITestCase):
     client = APIClient()
 

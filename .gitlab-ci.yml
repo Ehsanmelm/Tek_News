@@ -6,7 +6,7 @@ stages:
 
 variables:
   DJANGO_SETTINGS_MODULE: "config.settings"
-  MYSQL_DATABASE: "ehsan"
+  MYSQL_DATABASE: "tek_newws_db"
   MYSQL_ROOT_PASSWORD: "ehsan1382"
   
 
@@ -14,23 +14,17 @@ services:
   - mysql:latest
 
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - venv/
 
 before_script:
-  - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install install -r requirements.txt
-  - py -m venv venv
+  - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe -m venv venv
   - venv\Scripts\activate
 
 build:
   stage : build
   script :
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - py manage.py makemigrations
-    - py manage.py migrate
+
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
 
 
 test:
@@ -45,7 +39,7 @@ deploy:
   script : 
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - py manage.py runserver
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py runserver
   
 
 

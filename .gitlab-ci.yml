@@ -7,22 +7,38 @@ stages:
 variables:
   DJANGO_SETTINGS_MODULE: "config.settings"
   
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - venv/
+
+before_script:
+  - pip install -r requirements.txt
+  - py -m venv venv
+  - venv\Scripts\activate
+
 build:
   stage : build
   script :
-    - pip install -r requirements.txt
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - py manage.py makemigrations
     - py manage.py migrate
+
 
 test:
   stage : test
   script : 
-    - pip install -r requirements.txt
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - pytest
 
 deploy:
   stage : deploy
   script : 
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - py manage.py runserver
   
 

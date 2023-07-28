@@ -6,8 +6,14 @@ stages:
 
 variables:
   DJANGO_SETTINGS_MODULE: "config.settings"
+  MYSQL_DATABASE: "ehsan"
+  MYSQL_ROOT_PASSWORD: "ehsan1382"
   
 
+services:
+  - mysql:latest
+
+  
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:

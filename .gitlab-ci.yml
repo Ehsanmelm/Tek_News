@@ -13,14 +13,14 @@ variables:
 services:
   - mysql:latest
 
-  
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - venv/
 
 before_script:
-  - pip install -r requirements.txt
+  - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install install -r requirements.txt
   - py -m venv venv
   - venv\Scripts\activate
 

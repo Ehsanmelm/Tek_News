@@ -17,19 +17,20 @@ class TestNews(APITestCase ):
 
     def setUp(self):
         tag1 = TagModel.objects.create(tag_name='Tag 1')
-        tag2 = TagModel.objects.create(tag_name='Tag 2')
         self.news1 = NewsModel.objects.create(title='news1', description='Description1', resources='source1')
-        self.news1.tags.add(tag1, tag2)
+        self.news1.tags.add(tag1)
         
     def test_list_news(self):
 
-        # url = reverse('news_list')
-        response = self.client.get('/api/news/')
+        response = self.client.get(f'/api/news/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_news_retrieve(self):
-        response = self.client.get('/api/news/1/')
+        news = NewsModel.objects.first()
+        response = self.client.get(f'/api/news/{news.id}/')
+        print(f"<<<<<<<<<<<<<<<<<<<<< {response.json} >>>>>>>>>>>>>>")
         self.assertEqual(response.status_code ,status.HTTP_200_OK)
+        
 
 
     def test_filter_backends(self):

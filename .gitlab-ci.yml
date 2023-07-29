@@ -33,7 +33,7 @@ test:
   script : 
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - pytest news/test/test_news.py
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pytest.exe news/test/test_news.py
 
 deploy:
   stage : deploy

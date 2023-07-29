@@ -12,27 +12,22 @@ from news.models import NewsModel ,TagModel
 class TestNews(APITestCase ):
     client = APIClient()
 
-    # def setUp(self):
-    #     self.news1 = NewsModel.objects.create(title='news1', description='Description1', resources='source1')
-
     def setUp(self):
         tag1 = TagModel.objects.create(tag_name='Tag 1')
         self.news1 = NewsModel.objects.create(title='news1', description='Description1', resources='source1')
         self.news1.tags.add(tag1)
         
     def test_list_news(self):
-
         response = self.client.get(f'/api/news/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
     def test_news_retrieve(self):
         news = NewsModel.objects.first()
         response = self.client.get(f'/api/news/{news.id}/')
-        print(f"<<<<<<<<<<<<<<<<<<<<< {response.json} >>>>>>>>>>>>>>")
         self.assertEqual(response.status_code ,status.HTTP_200_OK)
+
         
-
-
     def test_filter_backends(self):
         backend = DjangoFilterBackend()
         assert backend.filter_queryset(None, queryset=NewsModel.objects.all(), view=None) is not None

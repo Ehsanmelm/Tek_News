@@ -7,7 +7,8 @@ stages:
 variables:
   DJANGO_SETTINGS_MODULE: "config.settings"
   MYSQL_DATABASE: "tek_newws_db"
-  MYSQL_ROOT_PASSWORD: "ehsan1382"
+  DB_USER : 'ehsan'
+  DB_PASSWORD : 'ehsan1382'
   
 
 services:

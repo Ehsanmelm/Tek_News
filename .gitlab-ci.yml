@@ -22,7 +22,8 @@ before_script:
 build:
   stage : build
   script :
-
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
 
@@ -32,7 +33,7 @@ test:
   script : 
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - pytest
+    - pytest news/test/test_news.py
 
 deploy:
   stage : deploy

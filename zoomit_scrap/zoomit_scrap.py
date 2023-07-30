@@ -60,19 +60,19 @@ class ZoomitSpider(scrapy.Spider):
             host='localhost',
             user='root',
             password='ehsan1382',
-            database='zoomit_scrap'
+            database='tek_news_db'
         )
 
         # Create a cursor object to execute sql queries
         cursor = connection.cursor()
 
-        for item in news_item:
+        for count ,item in enumerate(news_item):
             title = item['title']
             content = item['content']
             tags = ', '.join(item['tags'])
 
-            query = "INSERT INTO news (title, content, tags) VALUES (%s, %s, %s)"
-            values = (title, content, tags)
+            query = "INSERT INTO newsmodel (id,title, description, tags) VALUES (%s,%s, %s, %s)"
+            values = (count,title, content, tags)
 
             try:
                 # Execute the SQL query

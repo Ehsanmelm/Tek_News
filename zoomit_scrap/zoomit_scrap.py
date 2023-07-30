@@ -26,3 +26,14 @@ class ZoomitSpider(scrapy.Spider):
 
             item['url'] = article.css(
                 '.link__CustomNextLink-sc-1r7l32j-0.iCQspp::attr(href)').getall()
+            
+        item_list = []
+        item_dict = {}
+        for title, content, url in zip(item['title'], item['content'], item['url']):
+            item_dict['title'] = title
+            item_dict['content'] = content
+            item_dict['url'] = url
+            item_list.append(item_dict)
+            item_dict = {}
+
+            yield response.follow(url, callback=self.parse_news, meta={'title': title, 'content': content, 'item_list': item_list})

@@ -37,3 +37,20 @@ class ZoomitSpider(scrapy.Spider):
             item_dict = {}
 
             yield response.follow(url, callback=self.parse_news, meta={'title': title, 'content': content, 'item_list': item_list})
+
+
+    def parse_news(self, response):
+        news_item = []
+        title = response.meta['title']
+        content = response.meta['content']
+        tags = response.css(
+            '.typography__StyledDynamicTypographyComponent-t787b7-0.eMeOeL::text').getall()
+        news_info_dict = {}
+        news_info_dict['title'] = title
+        news_info_dict['content'] = content
+        news_info_dict['tags'] = tags
+        news_item.append(news_info_dict)
+
+        yield {
+            'items': news_item
+        }

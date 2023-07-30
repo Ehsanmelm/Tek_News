@@ -54,3 +54,34 @@ class ZoomitSpider(scrapy.Spider):
         yield {
             'items': news_item
         }
+
+        
+        connection = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='ehsan1382',
+            database='zoomit_scrap'
+        )
+
+        # Create a cursor object to execute sql queries
+        cursor = connection.cursor()
+
+        for item in news_item:
+            title = item['title']
+            content = item['content']
+            tags = ', '.join(item['tags'])
+
+            query = "INSERT INTO news (title, content, tags) VALUES (%s, %s, %s)"
+            values = (title, content, tags)
+
+            try:
+                # Execute the SQL query
+                cursor.execute(query, values)
+
+                connection.commit()
+            except Exception as e:
+                print(f"Error occurred: {str(e)}")
+                connection.rollback()
+
+        cursor.close()
+        connection.close()

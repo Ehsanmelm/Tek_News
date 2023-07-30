@@ -1,5 +1,7 @@
 import scrapy
 import mysql.connector
+import uuid
+
 
 class NewsItem(scrapy.Item):
     title = scrapy.Field()
@@ -12,12 +14,24 @@ class ZoomitSpider(scrapy.Spider):
     start_urls = ['https://www.zoomit.ir/']
 
     def parse(self, response):
+        connection = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='ehsan1382',
+            database='tek_news_db'
+        )
+        cursor = connection.cursor()
+        query = "delete from newsmodel"
+        cursor.execute(query)
+        connection.commit()
+        cursor.close()
+        connection.close()
 
         articles = response.css(
             '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC')
         for article in articles:
             item = NewsItem()
-            exit
+            
             item['title'] = article.css(
                 '.typography__StyledDynamicTypographyComponent-t787b7-0.ibfopD.BrowseArticleListItemDesktop___StyledTypography-sc-1szqe4e-0.hYItiO ::text').getall()
 
@@ -29,7 +43,7 @@ class ZoomitSpider(scrapy.Spider):
             
         item_list = []
         item_dict = {}
-        for title, content, url in zip(item['title'], item['content'], item['url']):
+        for title, content, url  in zip(item['title'], item['content'], item['url']):
             item_dict['title'] = title
             item_dict['content'] = content
             item_dict['url'] = url
@@ -37,6 +51,8 @@ class ZoomitSpider(scrapy.Spider):
             item_dict = {}
 
             yield response.follow(url, callback=self.parse_news, meta={'title': title, 'content': content, 'item_list': item_list})
+        else:
+            item_list =[]
 
 
     def parse_news(self, response):
@@ -66,18 +82,16 @@ class ZoomitSpider(scrapy.Spider):
         # Create a cursor object to execute sql queries
         cursor = connection.cursor()
 
-        for count ,item in enumerate(news_item):
+        for item in news_item:
             title = item['title']
             content = item['content']
             tags = ', '.join(item['tags'])
-
             query = "INSERT INTO newsmodel (id,title, description, tags) VALUES (%s,%s, %s, %s)"
-            values = (count,title, content, tags)
+            values = (str(uuid.uuid4()),title, content, tags)
 
             try:
                 # Execute the SQL query
                 cursor.execute(query, values)
-
                 connection.commit()
             except Exception as e:
                 print(f"Error occurred: {str(e)}")

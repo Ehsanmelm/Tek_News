@@ -18,7 +18,10 @@ class TagModel(models.Model):
 #         return f"{self.title}"
 
 
+
 class NewsModel(models.Model):
+    # id save as uuid.uuid4
+    id = models.CharField(primary_key=True, max_length=36) 
     title = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     tags = models.TextField(blank=True, null=True)

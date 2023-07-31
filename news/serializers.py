@@ -1,11 +1,6 @@
 from rest_framework import serializers
-from .models import NewsModel , TagModel
+from .models import NewsModel 
 
-
-# class TagSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         fields = ['id' ,'tag_name']
-#         model = TagModel
 
 
 class NewsSerializer(serializers.ModelSerializer):

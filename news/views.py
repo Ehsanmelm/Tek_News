@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet , ViewSet
 from rest_framework.views import APIView 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import PageNumberPagination
-from .models import TagModel , NewsModel
+from .models import  NewsModel
 from .serializers import NewsSerializer
 from .filters import NewsFilter
 

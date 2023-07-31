@@ -7,6 +7,7 @@ class NewsItem(scrapy.Item):
     title = scrapy.Field()
     content = scrapy.Field()
     url = scrapy.Field()
+    resources = scrapy.Field()
 
 
 class ZoomitSpider(scrapy.Spider):
@@ -51,8 +52,7 @@ class ZoomitSpider(scrapy.Spider):
             item_dict = {}
 
             yield response.follow(url, callback=self.parse_news, meta={'title': title, 'content': content, 'item_list': item_list})
-        else:
-            item_list =[]
+
 
 
     def parse_news(self, response):
@@ -61,10 +61,15 @@ class ZoomitSpider(scrapy.Spider):
         content = response.meta['content']
         tags = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.eMeOeL::text').getall()
+        
+        resources = response.css(
+            '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
+        
         news_info_dict = {}
         news_info_dict['title'] = title
         news_info_dict['content'] = content
         news_info_dict['tags'] = tags
+        news_info_dict['resources'] = resources
         news_item.append(news_info_dict)
 
         yield {
@@ -83,11 +88,17 @@ class ZoomitSpider(scrapy.Spider):
         cursor = connection.cursor()
 
         for item in news_item:
+            saved_news = cursor.fetchone()
+            # print(f"<<<<<<<<<<<<<<,2235435 {q} >>>>>>>>>>>>>>>>>>>>")
             title = item['title']
             content = item['content']
             tags = ', '.join(item['tags'])
-            query = "INSERT INTO newsmodel (id,title, description, tags) VALUES (%s,%s, %s, %s)"
-            values = (str(uuid.uuid4()),title, content, tags)
+            resources = ','.join(item['resources'])
+
+            cursor.execute(f'select * from newsmodel where title= {title}')
+            
+            query = "INSERT INTO newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
+            values = (str(uuid.uuid4()),title, content, tags ,resources )
 
             try:
                 # Execute the SQL query

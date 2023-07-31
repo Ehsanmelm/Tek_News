@@ -15,18 +15,6 @@ class ZoomitSpider(scrapy.Spider):
     start_urls = ['https://www.zoomit.ir/']
 
     def parse(self, response):
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='ehsan1382',
-            database='tek_news_db'
-        )
-        cursor = connection.cursor()
-        query = "delete from newsmodel"
-        cursor.execute(query)
-        connection.commit()
-        cursor.close()
-        connection.close()
 
         articles = response.css(
             '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC')
@@ -84,24 +72,27 @@ class ZoomitSpider(scrapy.Spider):
             database='tek_news_db'
         )
 
-        # Create a cursor object to execute sql queries
         cursor = connection.cursor()
 
         for item in news_item:
-            saved_news = cursor.fetchone()
-            # print(f"<<<<<<<<<<<<<<,2235435 {q} >>>>>>>>>>>>>>>>>>>>")
             title = item['title']
             content = item['content']
             tags = ', '.join(item['tags'])
             resources = ','.join(item['resources'])
 
-            cursor.execute(f'select * from newsmodel where title= {title}')
+            query ="select * from newsmodel where title=%s"
+            values = title ,
+            cursor.execute(query ,values)
+
+            saved_news = cursor.fetchall()
             
-            query = "INSERT INTO newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
-            values = (str(uuid.uuid4()),title, content, tags ,resources )
+            if saved_news:
+                print(f"there is the same news with title : {saved_news} ")
+            else:
+                query = "INSERT INTO newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
+                values = (str(uuid.uuid4()),title, content, tags ,resources )
 
             try:
-                # Execute the SQL query
                 cursor.execute(query, values)
                 connection.commit()
             except Exception as e:

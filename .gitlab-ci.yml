@@ -6,7 +6,7 @@ stages:
 
 variables:
   DJANGO_SETTINGS_MODULE: "config.settings"
-  MYSQL_DATABASE: "tek_newws_db"
+  MYSQL_DATABASE: "tek_newwws_db"
   DB_USER : 'ehsan'
   DB_PASSWORD : 'ehsan1382'
   
@@ -27,6 +27,7 @@ build:
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
+    - scrapy runspider zoomit_scrap/zoomit_scrap.py
 
 
 test:

@@ -69,7 +69,7 @@ class ZoomitSpider(scrapy.Spider):
             host='localhost',
             user='root',
             password='ehsan1382',
-            database='tek_news_db'
+            database='tek_newws_db'
         )
 
         cursor = connection.cursor()
@@ -80,7 +80,7 @@ class ZoomitSpider(scrapy.Spider):
             tags = ', '.join(item['tags'])
             resources = ','.join(item['resources'])
 
-            query ="select * from newsmodel where title=%s"
+            query ="select * from news_newsmodel where title=%s"
             values = title ,
             cursor.execute(query ,values)
 
@@ -89,7 +89,7 @@ class ZoomitSpider(scrapy.Spider):
             if saved_news:
                 print(f"there is the same news with title : {saved_news} ")
             else:
-                query = "INSERT INTO newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
+                query = "INSERT INTO news_newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
                 values = (str(uuid.uuid4()),title, content, tags ,resources )
 
             try:

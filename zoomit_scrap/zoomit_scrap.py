@@ -24,32 +24,32 @@ class ZoomitSpider(scrapy.Spider):
             item['title'] = article.css(
                 '.typography__StyledDynamicTypographyComponent-t787b7-0.ibfopD.BrowseArticleListItemDesktop___StyledTypography-sc-1szqe4e-0.hYItiO ::text').getall()
 
-            item['content'] = article.css(
-                '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC p::text').getall()
+            # item['content'] = article.css(
+            #     '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC p::text').getall()
 
             item['url'] = article.css(
                 '.link__CustomNextLink-sc-1r7l32j-0.iCQspp::attr(href)').getall()
             
         item_list = []
         item_dict = {}
-        for title, content, url  in zip(item['title'], item['content'], item['url']):
+        for title, url  in zip(item['title'], item['url']):
             item_dict['title'] = title
-            item_dict['content'] = content
             item_dict['url'] = url
             item_list.append(item_dict)
             item_dict = {}
 
-            yield response.follow(url, callback=self.parse_news, meta={'title': title, 'content': content, 'item_list': item_list})
+            yield response.follow(url, callback=self.parse_news, meta={'title': title, 'item_list': item_list})
 
 
 
     def parse_news(self, response):
         news_item = []
         title = response.meta['title']
-        content = response.meta['content']
         tags = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.eMeOeL::text').getall()
         
+        content = content = response.css(
+            '.slug__ArticleContainerMain-sc-1wri6xq-1.WDaAf p::text').getall()
         resources = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
         
@@ -76,7 +76,7 @@ class ZoomitSpider(scrapy.Spider):
 
         for item in news_item:
             title = item['title']
-            content = item['content']
+            content = ','.join(item['content'])
             tags = ', '.join(item['tags'])
             resources = ','.join(item['resources'])
 

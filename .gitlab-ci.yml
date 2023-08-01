@@ -27,7 +27,7 @@ build:
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
-    - scrapy runspider zoomit_scrap/zoomit_scrap.py
+    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\scrapy.exe runspider zoomit_scrap/zoomit_scrap.py
 
 
 test:

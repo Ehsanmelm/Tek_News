@@ -65,12 +65,8 @@ class YourSpider(scrapy.Spider):
         )
 
         cursor = connection.cursor()
-            
-        print(f"<<<<<<<<<<<<<<<< {title} >>>>>>>>>>>>>>>>")
-        print(f"<<<<<<<<<<<<<<<< {tags} >>>>>>>>>>>>>>>>")
-        print(f"<<<<<<<<<<<<<<<< {content} >>>>>>>>>>>>>>>>")
-        print(f"<<<<<<<<<<<<<<<< {resources} >>>>>>>>>>>>>>>>")
 
+    # avoide save repeated news in database
         query ="select * from news_newsmodel where title=%s"
         values = title[0] ,
         cursor.execute(query ,values)

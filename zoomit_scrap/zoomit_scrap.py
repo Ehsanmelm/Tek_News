@@ -1,68 +1,60 @@
+import time
 import scrapy
 import mysql.connector
 import uuid
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
 
 
-class NewsItem(scrapy.Item):
-    title = scrapy.Field()
-    content = scrapy.Field()
-    url = scrapy.Field()
-    resources = scrapy.Field()
+class YourSpider(scrapy.Spider):
+    name = 'zoomit2'
+    start_urls = ['https://www.zoomit.ir/archive/?sort=Newest&skip=20']
 
-
-class ZoomitSpider(scrapy.Spider):
-    name = 'zoomit_scrapy'
-    start_urls = ['https://www.zoomit.ir/']
+    def __init__(self):
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        self.driver = webdriver.Chrome(options=options)
 
     def parse(self, response):
+        self.driver.get('https://www.zoomit.ir/archive/?sort=Newest&skip=20')
 
-        articles = response.css(
-            '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC')
-        for article in articles:
-            item = NewsItem()
-            
-            item['title'] = article.css(
-                '.typography__StyledDynamicTypographyComponent-t787b7-0.ibfopD.BrowseArticleListItemDesktop___StyledTypography-sc-1szqe4e-0.hYItiO ::text').getall()
+        wait = WebDriverWait(self.driver, 10)
+        time.sleep(2)
+        count = 0
+        while True:
+            #  the number 6 is the repetion number for clicking on see more link 
+            # change this number to get the more news in site
+            if count < 6:
+                see_more_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.button__Base-kwkpzw-0.fpijDs.BrowseArticleData___StyledButton-sc-1qvnay0-0.eByvXQ')))
+                see_more_button.click()
+                time.sleep(3)
+            else:
+                break
+            count+=1
 
-            # item['content'] = article.css(
-            #     '.box__BoxBase-sc-1ww1anb-0.eIbCri.pages__LeftModuleBox-ghzl0u-4.gRVxfC p::text').getall()
+        news_links = self.driver.find_elements(
+            By.CSS_SELECTOR, '.flex__Flex-le1v16-0.rJAYV a')
 
-            item['url'] = article.css(
-                '.link__CustomNextLink-sc-1r7l32j-0.iCQspp::attr(href)').getall()
-            
-        item_list = []
-        item_dict = {}
-        for title, url  in zip(item['title'], item['url']):
-            item_dict['title'] = title
-            item_dict['url'] = url
-            item_list.append(item_dict)
-            item_dict = {}
+        for link in news_links:
+            yield scrapy.Request(url=link.get_attribute('href'), callback=self.parse_news, meta={'count': count})
 
-            yield response.follow(url, callback=self.parse_news, meta={'title': title, 'item_list': item_list})
-
-
+        self.driver.quit()
 
     def parse_news(self, response):
-        news_item = []
-        title = response.meta['title']
+
+        title = response.css(
+            '.typography__StyledDynamicTypographyComponent-t787b7-0.eNoCZh::text').getall()
+
         tags = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.eMeOeL::text').getall()
         
-        content = content = response.css(
+        content = response.css(
             '.slug__ArticleContainerMain-sc-1wri6xq-1.WDaAf p::text').getall()
+        
         resources = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
-        
-        news_info_dict = {}
-        news_info_dict['title'] = title
-        news_info_dict['content'] = content
-        news_info_dict['tags'] = tags
-        news_info_dict['resources'] = resources
-        news_item.append(news_info_dict)
-
-        yield {
-            'items': news_item
-        }
 
         
         connection = mysql.connector.connect(
@@ -73,31 +65,32 @@ class ZoomitSpider(scrapy.Spider):
         )
 
         cursor = connection.cursor()
-
-        for item in news_item:
-            title = item['title']
-            content = ','.join(item['content'])
-            tags = ', '.join(item['tags'])
-            resources = ','.join(item['resources'])
-
-            query ="select * from news_newsmodel where title=%s"
-            values = title ,
-            cursor.execute(query ,values)
-
-            saved_news = cursor.fetchall()
             
-            if saved_news:
-                print(f"there is the same news with title : {saved_news} ")
-            else:
-                query = "INSERT INTO news_newsmodel (id,title, description, tags , resources ) VALUES (%s,%s, %s,%s , %s)"
-                values = (str(uuid.uuid4()),title, content, tags ,resources )
+        print(f"<<<<<<<<<<<<<<<< {title} >>>>>>>>>>>>>>>>")
+        print(f"<<<<<<<<<<<<<<<< {tags} >>>>>>>>>>>>>>>>")
+        print(f"<<<<<<<<<<<<<<<< {content} >>>>>>>>>>>>>>>>")
+        print(f"<<<<<<<<<<<<<<<< {resources} >>>>>>>>>>>>>>>>")
 
-            try:
-                cursor.execute(query, values)
-                connection.commit()
-            except Exception as e:
-                print(f"Error occurred: {str(e)}")
-                connection.rollback()
+        query ="select * from news_newsmodel where title=%s"
+        values = title[0] ,
+        cursor.execute(query ,values)
+
+        saved_news = cursor.fetchall()
+            
+        if saved_news:
+            print(f"there is the same news with title : {saved_news} ")
+        else:
+            query = "INSERT INTO news_newsmodel (id , title, description, tags, resources ) VALUES (%s ,%s, %s, %s, %s)"
+            values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
+
+        try:
+            cursor.execute(query, values)
+
+            connection.commit()
+
+        except Exception as e:
+            print(f"Error occurred: {str(e)}")
+            connection.rollback()
 
         cursor.close()
         connection.close()

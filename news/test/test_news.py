@@ -3,7 +3,8 @@ from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase 
-from news.models import NewsModel ,TagModel
+from news.models import NewsModel 
+import uuid
 # from django.conf import settings
 
 # settings.configure()
@@ -13,9 +14,7 @@ class TestNews(APITestCase ):
     client = APIClient()
 
     def setUp(self):
-        tag1 = TagModel.objects.create(tag_name='Tag 1')
-        self.news1 = NewsModel.objects.create(title='news1', description='Description1', resources='source1')
-        self.news1.tags.add(tag1)
+        self.news1 = NewsModel.objects.create(id=uuid.uuid4(),title='news1', description='Description1', resources='source1' , tags ='tag1')
         
     def test_list_news(self):
         response = self.client.get(f'/api/news/')

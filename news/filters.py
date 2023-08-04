@@ -6,5 +6,5 @@ class NewsFilter(FilterSet):
     class Meta:
         model = NewsModel
         fields = {
-            'tags': ['exact'],
+            'tags': ['icontains'],
         }

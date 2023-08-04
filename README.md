@@ -17,6 +17,7 @@ DB_USER and DB_PASSWORD are required in .env file. Also put a secure secret key 
 <br><br>Run these commands in order.<br>
 * `py manage.py makemigrations`<br>
 `py manage.py migrate`<br>
+`scrapy runspider zoomit_scrap/zoomit_scrap.py`<br>
 
 ## Run
 `py manage.py runserver`<br>

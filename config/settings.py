@@ -94,10 +94,12 @@ DATABASES = {
     # }
         'default': {  
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'tek_newws_db',  
+        # 'NAME': 'tek_newws_db',  
+        'NAME': 'tek_news2',  
         'USER': env('DB_USER'),  
         'PASSWORD': env('DB_PASSWORD'),  
-        'HOST': '127.0.0.1',  
+        # 'HOST': '127.0.0.1',  
+        'HOST': 'db',  
         'PORT': '3306',    
 }
 }

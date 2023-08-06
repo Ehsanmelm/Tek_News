@@ -8,10 +8,12 @@ from rest_framework.pagination import PageNumberPagination
 from .models import  NewsModel
 from .serializers import NewsSerializer
 from .filters import NewsFilter
-
+from .tasks import test_celery
+from django.http import HttpResponse
 # Create your views here.
 
 class NewsViewSet(ModelViewSet):
+    # test_celery.delay('i am sendig message')
     http_method_names = ['get']
     queryset = NewsModel.objects.all()
     serializer_class = NewsSerializer
@@ -20,3 +22,6 @@ class NewsViewSet(ModelViewSet):
     filterset_class = NewsFilter
 
     
+def celery_test(request):
+    test_celery.delay('i am in view')
+    return HttpResponse('ok')

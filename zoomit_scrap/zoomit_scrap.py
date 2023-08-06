@@ -76,7 +76,7 @@ class YourSpider(scrapy.Spider):
         if saved_news:
             print(f"there is the same news with title : {saved_news} ")
         else:
-            query = "INSERT INTO news_newsmodel (id , title, description, tags, resources ) VALUES (%s ,%s, %s, %s, %s)"
+            query = "INSERT INTO news_newsmodel (id , title, tags, description, resources ) VALUES (%s ,%s, %s, %s, %s)"
             values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
 
         try:

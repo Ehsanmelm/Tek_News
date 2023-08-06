@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  celery:
+    build: .
+    command: celery -A config worker --loglevel=info
+    depends_on:
+      - backend
+      - redis
+
   db:
     image: mysql:8
     environment:

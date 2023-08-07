@@ -6,15 +6,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
-
 from selenium.webdriver.chrome.options import Options
 
-# REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
-# TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-# FEED_EXPORT_ENCODING = "utf-8"
 
-
-class YourSpider(scrapy.Spider):
+class MainSpider(scrapy.Spider):
     name = 'zoomit2'
     start_urls = ['https://www.zoomit.ir/archive/?sort=Newest&skip=20']
 
@@ -32,7 +27,7 @@ class YourSpider(scrapy.Spider):
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         # self.driver = webdriver.Chrome(options=options)
-        self.driver = webdriver.Chrome(options=self.set_chrome_options() )
+        self.driver = webdriver.Chrome(options=self.set_chrome_options())
 
     def parse(self, response):
         self.driver.get('https://www.zoomit.ir/archive/?sort=Newest&skip=20')
@@ -74,6 +69,22 @@ class YourSpider(scrapy.Spider):
         resources = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
 
+        # connection = mysql.connector.connect(
+        #     host='localhost',
+        #     user='root',
+        #     password='ehsan1382'
+        # )
+
+        # cursor = connection.cursor()
+
+        # try:
+        #     cursor.execute("CREATE DATABASE IF NOT EXISTS tek_news3")
+        # except Exception as e:
+        #     print(f"Error occurred while creating database: {str(e)}")
+
+        # cursor.close()
+        # connection.close()
+
         connection = mysql.connector.connect(
             # host='localhost',
             host='db',
@@ -84,7 +95,6 @@ class YourSpider(scrapy.Spider):
         )
 
         cursor = connection.cursor()
-        # cursor.execute("CREATE DATABASE IF NOT EXISTS tek_news2")
 
     # avoide save repeated news in database
         query = "select * from news_newsmodel where title=%s"
@@ -97,7 +107,9 @@ class YourSpider(scrapy.Spider):
             print(f"there is the same news with title : {saved_news} ")
         else:
             query = "INSERT INTO news_newsmodel (id , title, tags, description, resources ) VALUES (%s ,%s, %s, %s, %s)"
-            values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
+            # values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
+            values = (str(uuid.uuid4()), title[0], ','.join(
+                tags), ','.join(content), ','.join(resources))
 
         try:
             cursor.execute(query, values)

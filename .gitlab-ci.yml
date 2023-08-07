@@ -1,48 +1,61 @@
-image: python:3.11
+# image: python:3.11
+# stages:
+#   - build
+#   - test
+#   - deploy
+
+# variables:
+#   DJANGO_SETTINGS_MODULE: "config.settings"
+#   MYSQL_DATABASE: "tek_newwws_db"
+#   DB_USER : 'ehsan'
+#   DB_PASSWORD : 'ehsan1382'
+  
+
+# services:
+#   - mysql:latest
+
+
+
+# before_script:
+#   - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe -m venv venv
+#   - venv\Scripts\activate
+
+# build:
+#   stage : build
+#   script :
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\scrapy.exe runspider zoomit_scrap/zoomit_scrap.py
+
+
+# test:
+#   stage : test
+#   script : 
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pytest.exe news/test/test_news.py
+
+# deploy:
+#   stage : deploy
+#   script : 
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
+#     - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py runserver
+  
+
+
 stages:
   - build
-  - test
   - deploy
 
-variables:
-  DJANGO_SETTINGS_MODULE: "config.settings"
-  MYSQL_DATABASE: "tek_newwws_db"
-  DB_USER : 'ehsan'
-  DB_PASSWORD : 'ehsan1382'
-  
-
-services:
-  - mysql:latest
-
-
-
-before_script:
-  - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe -m venv venv
-  - venv\Scripts\activate
-
-build:
-  stage : build
-  script :
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py makemigrations
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py migrate
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\scrapy.exe runspider zoomit_scrap/zoomit_scrap.py
-
-
-test:
-  stage : test
+build : 
+  stage: build
   script : 
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pytest.exe news/test/test_news.py
+    - docker-compose build -d
 
 deploy:
-  stage : deploy
-  script : 
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install --upgrade pip
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\Scripts\pip.exe install -r requirements.txt
-    - C:\Users\ehsan\AppData\Local\Programs\Python\Python311\python.exe manage.py runserver
-  
-
-
+  stage: deploy
+  script:
+    - docker-compose up -d

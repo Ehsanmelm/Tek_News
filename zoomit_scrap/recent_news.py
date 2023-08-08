@@ -24,12 +24,9 @@ class MainSpider(scrapy.Spider):
 
         for url in item['url']:
             yield response.follow(url, callback=self.parse_news)
-            # yield scrapy.Request(url, callback=self.parse_news, meta)
 
     def parse_news(self, response):
 
-        # title = response.css(
-        #     '.typography__StyledDynamicTypographyComponent-t787b7-0.eNoCZh::text').getall()
         title = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.eNoCZh::text').getall()
 
@@ -45,16 +42,13 @@ class MainSpider(scrapy.Spider):
         if len(title) > 0:
 
             connection = mysql.connector.connect(
-                # host='localhost',
                 host='db',
                 user='root',
                 password='ehsan1382',
-                # database='tek_test'
                 database='tek_news2'
             )
 
             cursor = connection.cursor()
-            # cursor.execute("CREATE DATABASE IF NOT EXISTS tek_news2")
 
         # avoide save repeated news in database
             query = "select * from news_newsmodel where title=%s"
@@ -67,7 +61,6 @@ class MainSpider(scrapy.Spider):
                 print(f"there is the same news with title : {saved_news} ")
             else:
                 query = "INSERT INTO news_newsmodel (id , title, tags, description, resources ) VALUES (%s ,%s, %s, %s, %s)"
-                # values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
                 values = (str(uuid.uuid4()), title[0], ','.join(
                     tags), ','.join(content), ','.join(resources))
 

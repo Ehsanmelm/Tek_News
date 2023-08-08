@@ -69,28 +69,10 @@ class MainSpider(scrapy.Spider):
         resources = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
 
-        # connection = mysql.connector.connect(
-        #     host='localhost',
-        #     user='root',
-        #     password='ehsan1382'
-        # )
-
-        # cursor = connection.cursor()
-
-        # try:
-        #     cursor.execute("CREATE DATABASE IF NOT EXISTS tek_news3")
-        # except Exception as e:
-        #     print(f"Error occurred while creating database: {str(e)}")
-
-        # cursor.close()
-        # connection.close()
-
         connection = mysql.connector.connect(
-            # host='localhost',
             host='db',
             user='root',
             password='ehsan1382',
-            # database='tek_newws_db'
             database='tek_news2'
         )
 
@@ -107,7 +89,6 @@ class MainSpider(scrapy.Spider):
             print(f"there is the same news with title : {saved_news} ")
         else:
             query = "INSERT INTO news_newsmodel (id , title, tags, description, resources ) VALUES (%s ,%s, %s, %s, %s)"
-            # values = ( str(uuid.uuid4()), title[0] , ','.join(tags) , content[0] , ','.join(resources) )
             values = (str(uuid.uuid4()), title[0], ','.join(
                 tags), ','.join(content), ','.join(resources))
 

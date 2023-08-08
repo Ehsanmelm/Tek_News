@@ -32,12 +32,16 @@ services:
       - 6379:6379
   celery:
     build: .
-    command: celery -A config worker --loglevel=info
-    # command: celery -A config beat --loglevel=info
     depends_on:
       - backend
       - redis
+    command: celery -A config worker --loglevel=info
 
+  celery_beat:
+    build: .
+    depends_on:
+      - celery
+    command: celery -A config beat
 volumes:
   db_data:
 

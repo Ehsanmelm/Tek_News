@@ -163,10 +163,10 @@ SPECTACULAR_SETTINGS = {
 
 CELERY_BROKER_URL = 'redis://redis:6379/1'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
-# CELERY_BEAT_SCHEDULE = {
-#     'NewsScraperTask': {
-#         'task': 'news.tasks.NewsScraperTask',
-#         'schedule': 5,
-#         'args': [' <<<<<passed >>>>>']
-#     }
-# }
+CELERY_BEAT_SCHEDULE = {
+    'NewsScraperTask': {
+        'task': 'news.tasks.NewsScraperTask',
+        'schedule': 1 * 60,
+        'args': [' <<<<<passed >>>>>']
+    }
+}

@@ -21,6 +21,11 @@ services:
       - db
     command: bash -c " python3 manage.py migrate && scrapy runspider zoomit_scrap/zoomit_scrap.py && python3 manage.py runserver 0.0.0.0:8000 "
 
+  pytest:
+    build: .
+    depends_on:
+      - db
+    command: pytest
   redis:
     image: redis:latest
     ports:

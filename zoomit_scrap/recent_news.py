@@ -38,14 +38,13 @@ class MainSpider(scrapy.Spider):
 
         resources = response.css(
             '.typography__StyledDynamicTypographyComponent-t787b7-0.exnhHg::text').getall()
-        print(f"<<<<<<<<<<<<<<<<<<<<<<<<< {tags}")
         if len(title) > 0:
 
             connection = mysql.connector.connect(
                 host='db',
+                database='tek_news2',
                 user='root',
                 password='ehsan1382',
-                database='tek_news2'
             )
 
             cursor = connection.cursor()
@@ -53,12 +52,13 @@ class MainSpider(scrapy.Spider):
         # avoide save repeated news in database
             query = "select * from news_newsmodel where title=%s"
             values = title[0],
+            print(f"<<<<<<<<<<<<<<<<<<<<<<<<< {values} >>>>>>>>>>>>>>>>>>>>>")
             cursor.execute(query, values)
 
             saved_news = cursor.fetchall()
 
             if saved_news:
-                print(f"there is the same news with title : {saved_news} ")
+                print(f"there is the same news with title : {title[0]} ")
             else:
                 query = "INSERT INTO news_newsmodel (id , title, tags, description, resources ) VALUES (%s ,%s, %s, %s, %s)"
                 values = (str(uuid.uuid4()), title[0], ','.join(

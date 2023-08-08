@@ -24,7 +24,3 @@ class NewsViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         NewsScraperTask.delay('i am sending message')
         return super().list(request, *args, **kwargs)
-
-# def celery_test(request):
-#     NewsScraperTask.delay('i am in view')
-#     return HttpResponse('ok')

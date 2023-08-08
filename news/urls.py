@@ -6,7 +6,3 @@ router = DefaultRouter()
 router.register('news', views.NewsViewSet, basename='news_list')
 
 urlpatterns = router.urls
-
-# urlpatterns += [
-#     path('test', views.celery_test)
-# ]

@@ -26,13 +26,16 @@ services:
     depends_on:
       - db
     command: pytest
+
   redis:
     image: redis:latest
     ports:
       - 6379:6379
+
   celery:
     build: .
     depends_on:
+      - db
       - backend
       - redis
     command: celery -A config worker --loglevel=info
@@ -41,6 +44,18 @@ services:
     build: .
     depends_on:
       - celery
+      - redis
+      - backend
     command: celery -A config beat
+
+  celery_flower:
+    build: .
+    command: celery -A config flower
+    ports:
+      - 5555:5555
+    depends_on:
+      - celery
+      - redis
+
 volumes:
   db_data:

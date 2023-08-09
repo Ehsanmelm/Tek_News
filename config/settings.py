@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-import os,environ 
+import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,8 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     # Default values
-    DEBUG = (bool , True),
-    SECRET_KEY = (str , 'django-insecure-ji**2pmiv6(9-zzle@5old#!px7dt6+ko%&!9@jh2w72ewz$rp'),
+    DEBUG=(bool, True),
+    SECRET_KEY=(
+        str, 'django-insecure-ji**2pmiv6(9-zzle@5old#!px7dt6+ko%&!9@jh2w72ewz$rp'),
 )
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
@@ -92,14 +94,14 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-        'default': {  
-        'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'tek_newws_db',  
-        'USER': env('DB_USER'),  
-        'PASSWORD': env('DB_PASSWORD'),  
-        'HOST': '127.0.0.1',  
-        'PORT': '3306',    
-}
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tek_news2',
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '3306',
+    }
 }
 
 
@@ -146,8 +148,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE' : 10
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 
 SPECTACULAR_SETTINGS = {
@@ -155,4 +157,14 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Tek News swagger documentation',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+}
+
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
+CELERY_BEAT_SCHEDULE = {
+    'NewsScraperTask': {
+        'task': 'news.tasks.NewsScraperTask',
+        'schedule': 1 * 60,
+        'args': [' <<<<<passed >>>>>']
+    }
 }

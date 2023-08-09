@@ -1,27 +1,14 @@
 # Tek_News
 
-
-## Installation
-
-```
-cd existing_repo
-py -m venv venv
-venv\Scripts\activate
-py -m pip install -r requirements.txt
-
-```
-
 ## Setup
 Create a .env file in root of project .
 DB_USER and DB_PASSWORD are required in .env file. Also put a secure secret key too, otherwise django insecure key will be used.
-<br><br>Run these commands in order.<br>
-* `py manage.py makemigrations`<br>
-`py manage.py migrate`<br>
-`scrapy runspider zoomit_scrap/zoomit_scrap.py`<br>
+<br><br>Run this command and create your database in docker .<br>
+ `docker exec -it <>DB_contatiner_name mysql -u <DB_username> -p`<br>
 
 ## Run
-`py manage.py runserver`<br>
-
+`docker-compose build`<br>
+`docker-compose up`<br>
 
 ## Add your files
 

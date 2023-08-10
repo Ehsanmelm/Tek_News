@@ -13,7 +13,6 @@ class NewsDocuments(Document):
         attr='tags',
         fields={
             'raw': fields.KeywordField(),
-            # 'suggest': fields.CompletionField(),
         }
     )
     resources = fields.TextField(attr='resources')

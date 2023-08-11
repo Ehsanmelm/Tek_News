@@ -4,11 +4,11 @@ from .models import NewsModel
 from .documents import NewsDocuments
 
 
-class NewsSerializer(serializers.ModelSerializer):
-    # tags= TagSerializer(many=True)
-    class Meta:
-        fields = ['id', 'title', 'description', 'resources', 'tags']
-        model = NewsModel
+# class NewsSerializer(serializers.ModelSerializer):
+#     # tags= TagSerializer(many=True)
+#     class Meta:
+#         fields = ['id', 'title', 'description', 'resources', 'tags']
+#         model = NewsModel
 
 
 class NewsDocumentSerializer(DocumentSerializer):

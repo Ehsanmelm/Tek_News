@@ -7,7 +7,7 @@ from .models import NewsModel
 @registry.register_document
 class NewsDocuments(Document):
     id = fields.TextField()
-    title = fields.TextField()
+    title = fields.TextField(attr='title')
     description = fields.TextField(attr='description')
     tags = fields.TextField(
         attr='tags',

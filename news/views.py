@@ -9,28 +9,16 @@ from .documents import NewsDocuments
 # Create your views here.
 
 
-# class NewsViewSet(ModelViewSet):
-#     http_method_names = ['get']
-#     queryset = NewsModel.objects.all()
-#     serializer_class = NewsSerializer
-#     pagination_class = PageNumberPagination
-#     filter_backends = (DjangoFilterBackend,)
-#     filterset_class = NewsFilter
-
-#     def list(self, request, *args, **kwargs):
-#         NewsScraperTask.delay('i am sending message')
-#         return super().list(request, *args, **kwargs)
-
-
 class NewsDocumentView(DocumentViewSet):
     document = NewsDocuments
     serializer_class = NewsDocumentSerializer
     filter_backends = [
         SearchFilterBackend,
     ]
-    search_fields = ('tags', )
-    search_fields = ('tags', 'tags__icontains', )
+#  base on project document it will search between all necessary fields
+    search_fields = ('tags', 'title', 'description')
 
+#  in addition to run celery task every 30 second by refreshing page task will be execute too
     def list(self, request, *args, **kwargs):
         NewsScraperTask.delay('i am sending message')
         return super().list(request, *args, **kwargs)

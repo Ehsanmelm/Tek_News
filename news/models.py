@@ -10,6 +10,8 @@ class NewsModel(models.Model):
     tags = models.TextField(blank=True, null=True)
     resources = models.TextField(blank=True, null=True)
 
+    def __str__(self) -> str:
+        return f"{self.title}"
     # class Meta:
     #     # managed = False
     #     db_table = 'newsmodel'

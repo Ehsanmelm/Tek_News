@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
+
     'drf_spectacular',
     'rest_framework',
     'django_filters',
@@ -168,3 +171,14 @@ CELERY_BEAT_SCHEDULE = {
         'args': [' <<<<<passed >>>>>']
     }
 }
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'elasticsearch:9200'
+    },
+}
+
+# specify the name of index on elastic
+# ELASTICSEARCH_INDEX_NAMES = {
+#     'articles.article': 'news',
+# }

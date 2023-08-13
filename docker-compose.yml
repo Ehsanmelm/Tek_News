@@ -6,7 +6,7 @@ services:
     image: mysql:8
     environment:
       MYSQL_DATABASE: 'tek_news2'
-      MYSQL_USER: 'root'
+      MYSQL_USER: 'ehsan'
       MYSQL_PASSWORD: 'ehsan1382'
       MYSQL_ROOT_PASSWORD: 'ehsan1382'
 
@@ -19,7 +19,11 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
     command: bash -c " python3 manage.py migrate && scrapy runspider zoomit_scrap/zoomit_scrap.py && python3 manage.py runserver 0.0.0.0:8000 "
+    # command: bash -c " python3 manage.py migrate  && python3 manage.py runserver 0.0.0.0:8000 "
 
   pytest:
     build: .
@@ -57,5 +61,15 @@ services:
       - celery
       - redis
 
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
 volumes:
   db_data:
+  es_data:

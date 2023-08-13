@@ -1,8 +1,11 @@
 from . import views
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from django.urls import path
 
-router = DefaultRouter()
-router.register('news', views.NewsViewSet, basename='news_list')
 
-urlpatterns = router.urls
+elastic_router = SimpleRouter(trailing_slash=False)
+elastic_router.register(
+    r'news/', views.NewsDocumentView, basename='elastic_news')
+
+
+urlpatterns = elastic_router.urls

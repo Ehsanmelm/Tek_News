@@ -23,6 +23,7 @@ RUN wget -q https://chromedriver.storage.googleapis.com/LATEST_RELEASE -O /tmp/c
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install -r requirements.txt
 
 
 COPY . .

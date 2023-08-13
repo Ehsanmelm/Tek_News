@@ -38,7 +38,7 @@ class MainSpider(scrapy.Spider):
         while True:
             #  the number 6 is the repetion number for clicking on see more link
             # change this number to get the more news in site
-            if count < 6:
+            if count < 1:
                 see_more_button = wait.until(EC.element_to_be_clickable(
                     (By.CSS_SELECTOR, '.button__Base-kwkpzw-0.fpijDs.BrowseArticleData___StyledButton-sc-1qvnay0-0.eByvXQ')))
                 see_more_button.click()

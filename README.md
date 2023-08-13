@@ -9,6 +9,12 @@ DB_USER and DB_PASSWORD are required in .env file. Also put a secure secret key 
 ## Run
 `docker-compose build`<br>
 `docker-compose up`<br>
+### for search:
+go to this URL `http://localhost:8000/api/news?search=< word you want to search>`
+#### search by fields:
+go to this URL `http://localhost:8000/api/news?search=<fields name like title , tags> : < word you want to search>`
+#### search with multiple  terms:
+got to this URL `http://localhost:8000/api/news?search=< word you want to search>&search=<another word you want to search too>`
 
 ## Add your files
 

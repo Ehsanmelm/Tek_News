@@ -10,6 +10,7 @@ from .documents import NewsDocuments
 
 
 class NewsDocumentView(DocumentViewSet):
+
     document = NewsDocuments
     serializer_class = NewsDocumentSerializer
     filter_backends = [
@@ -19,6 +20,6 @@ class NewsDocumentView(DocumentViewSet):
     search_fields = ('tags', 'title', 'description')
 
 #  in addition to run celery task every 30 second by refreshing page task will be execute too
-    def list(self, request, *args, **kwargs):
-        NewsScraperTask.delay('i am sending message')
-        return super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     NewsScraperTask.delay('i am sending message')
+    #     return super().list(request, *args, **kwargs)

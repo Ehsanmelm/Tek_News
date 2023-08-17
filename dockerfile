@@ -14,17 +14,16 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
+# specify the chromedriver version
+ENV CHROMEDRIVER_VERSION 116.0.5845.96
+
 # Install chromedriver
-RUN wget -q https://chromedriver.storage.googleapis.com/LATEST_RELEASE -O /tmp/chrome_version \
-    && wget -q https://chromedriver.storage.googleapis.com/$(cat /tmp/chrome_version)/chromedriver_linux64.zip -O /tmp/chromedriver.zip \
+RUN wget -q https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip -O /tmp/chromedriver.zip \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && rm /tmp/chromedriver.zip
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-# RUN pip install -r requirements.txt
-
 
 COPY . .
-

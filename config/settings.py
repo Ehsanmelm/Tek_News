@@ -177,8 +177,3 @@ ELASTICSEARCH_DSL = {
         'hosts': 'elasticsearch:9200'
     },
 }
-
-# specify the name of index on elastic
-# ELASTICSEARCH_INDEX_NAMES = {
-#     'articles.article': 'news',
-# }

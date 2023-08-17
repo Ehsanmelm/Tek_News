@@ -23,7 +23,6 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
     command: bash -c " python3 manage.py migrate && scrapy runspider zoomit_scrap/zoomit_scrap.py && python3 manage.py runserver 0.0.0.0:8000 "
-    # command: bash -c " python3 manage.py migrate  && python3 manage.py runserver 0.0.0.0:8000 "
 
   pytest:
     build: .

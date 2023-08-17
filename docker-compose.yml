@@ -6,7 +6,7 @@ services:
     image: mysql:8
     environment:
       MYSQL_DATABASE: 'tek_news2'
-      MYSQL_USER: 'ehsan'
+      MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'ehsan1382'
       MYSQL_ROOT_PASSWORD: 'ehsan1382'
 

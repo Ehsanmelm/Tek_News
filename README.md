@@ -7,8 +7,10 @@ DB_USER and DB_PASSWORD are required in .env file. Also put a secure secret key 
  `docker exec -it <>DB_contatiner_name mysql -u <DB_username> -p`<br>
 
 ## Run
+<b>make sure that you have access to chromedriver site because of filtering<br><br></b>
 `docker-compose build`<br>
-`docker-compose up`<br>
+`docker-compose up`<br><br>
+if you had any possible problem on process you can restart backend service by`docker-compose restart backend`
 ### for search:
 go to this URL `http://localhost:8000/api/news?search=< word you want to search>`
 #### search by fields:
